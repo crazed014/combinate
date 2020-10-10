@@ -4,7 +4,7 @@ viewcount = 0
 
 @app.route("/")
 def welcome():
-    return render_template("welcome.html")
+    return render_template("welcome.html", title="Combinate", formtext="Drag your first CSV here.")
 
 @app.route("/viewed")
 def viewed():
