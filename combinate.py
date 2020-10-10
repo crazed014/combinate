@@ -1,12 +1,15 @@
-from flask import Flask
-
+from flask import Flask, render_template
 app = Flask(__name__)
-
+viewcount = 0
 
 @app.route("/")
 def welcome():
-    return "Welcome to my app"
+    return render_template("welcome.html")
 
+@app.route("/viewed")
+def viewed():
+    global viewcount
+    viewcount += 1
+    return "This page has been served {} times since the last reboot.".format(str(viewcount))
 
-
-# run flask run --host=0.0.0.0
+#  flask run --host=0.0.0.0

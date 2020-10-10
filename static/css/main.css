@@ -1,0 +1,21 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Source Code Variable";
+    color: #444;
+    background-color:#0072bc;
+
+  }
+
+  #title {
+    position: absolute;
+    left: 46%;
+    top: 10%
+
+  }
+  #dragfield {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+  }
