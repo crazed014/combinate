@@ -4,6 +4,9 @@
         <meta charset="UTF-8">
         <title>Combinate</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+        {{ dropzone.load_css() }}
+        {{ dropzone.style('border: 2px dashed #0087F7; margin: 15%; min-height: 10vh;') }}
+
     </head>
     <body>
         <div id="title">
@@ -11,10 +14,10 @@
                 {{title}}
             </p>
         </div>
-        <div id="dragfield">
-            <p id="dragtext">
-                {{formtext}}
-            </p>
-        </div>
+        {{ dropzone.load_js() }}
+        {{ dropzone.create(action='welcome') }}
+        {{ dropzone.config() }}
+            
+
     </body>
 </html>

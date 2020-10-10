@@ -1,5 +1,9 @@
 from flask import Flask, render_template
+from flask_dropzone import Dropzone
+
+
 app = Flask(__name__)
+dropzone = Dropzone(app)
 viewcount = 0
 
 @app.route("/")
