@@ -15,8 +15,10 @@
             </p>
         </div>
         {{ dropzone.load_js() }}
-        {{ dropzone.create(action='welcome') }}
-        {{ dropzone.config() }}
+        {{ dropzone.create('/') }}
+        {{ dropzone.config(max_files=2, timeout=10000) }}
+
+
             
 
     </body>
