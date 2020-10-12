@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta http-equiv="cache-control" content="no-cache" />
         <title>Combinate</title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
         {{ dropzone.load_css() }}
@@ -19,7 +20,6 @@
         {{ dropzone.config(max_files=2, timeout=10000) }}
 
 
-            
 
     </body>
 </html>

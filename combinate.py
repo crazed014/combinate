@@ -1,35 +1,49 @@
-from flask import Flask, render_template
-from flask_dropzone import Dropzone
 import os
 
-app = Flask(__name__)
-dropzone = Dropzone(app)
-viewcount = 0
+from flask import Flask, render_template, request
+from flask_dropzone import Dropzone
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+app = Flask(__name__)
+
 app.config.update(
     UPLOADED_PATH=os.path.join(basedir, 'uploads'),
-    # Flask-Dropzone config:
-    DROPZONE_MAX_FILES=3,
-    DROPZONE_UPLOAD_ON_CLICK=True
+    DROPZONE_ALLOWED_FILE_CUSTOM = True,
+    DROPZONE_ALLOWED_FILE_TYPE = '.csv, .txt',
+    DROPZONE_MAX_FILES=2,
+    DROPZONE_DEFAULT_MESSAGE = "Click or Drag your two CSV files to upload."
 )
-@app.route("/")
-def welcome():
-    return render_template("welcome.html", title="Combinate", formtext="Drag your first CSV here.")
 
-@app.route("/viewed")
-def viewed():
-    global viewcount
-    viewcount += 1
-    return "This page has been served {} times since the last reboot.".format(str(viewcount))
 
-@app.route('/uploads', methods=['GET', 'POST'])
+dropzone = Dropzone(app)
+
+
+
+@app.route('/', methods=['POST', 'GET'])
 def upload():
-
+    global filecount
+    filecount = 0 
     if request.method == 'POST':
-        f = request.files.get('file')
-        f.save(os.path.join('/srv/combinate/files/', f.filename))
+        for key, f in request.files.items():
+            if key.startswith('file'):
+                f.save(os.path.join(app.config['UPLOADED_PATH'], f.filename))
+                filecount += 1
+    if filecount < 2:
+        app.config.update(DROPZONE_REDIRECT_VIEW='second')
+        print("Didn't upload second csv, redirecting. CSV count is: {}".format(str(filecount)))
+    else:
+        app.config.update(DROPZONE_REDIRECT_VIEW='completed')
+        print("Did upload second csv, redirecting. CSV count is: {}".format(str(filecount)))
+    return render_template('welcome.html', title="Combinate")
 
-    return render_template("welcome.html", title="Combinate", formtext="Drag your second CSV here.")
-#  flask run --host=0.0.0.0
+@app.route('/second')
+def second():
+    return '<h1>The Redirected Page</h1><p>Upload not complete.</p>'
+
+@app.route('/completed')
+def completed():
+    return '<h1>The Redirected Page</h1><p>Upload completed.</p>'
+
+if __name__ == '__main__':
+    app.run(debug=True)
